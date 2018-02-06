@@ -27,9 +27,9 @@ export class AppComponent implements OnInit {
 
   public runTests(): void {
     console.log('run tests');
-    // const t = document.querySelector('.activeTests');
-    // console.log(t);
-    // console.log(t.getAttribute('checked'));
-    console.log('tests: ', this.tests);
+    const activeTests = this.tests.filter(test => {
+      return test.active;
+    });
+    console.log('tests: ', activeTests);
   }
 }
