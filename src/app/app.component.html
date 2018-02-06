@@ -1,0 +1,9 @@
+<div>
+  <input type="text" /><button (click)="runTests()">Run</button>
+</div>
+<ul>
+  <li *ngFor="let test of tests">
+    <input type="checkbox" class="activeTests" [(ngModel)]="test.active">{{test.checkName}}
+  </li>
+</ul>
+
