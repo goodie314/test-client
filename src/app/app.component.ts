@@ -61,10 +61,12 @@ export class AppComponent implements OnInit {
   public openInfo(test: Test): void {
     if (this.displayInfoComponent.getDisplay()) {
       this.displayInfoComponent.setDisplay(false);
-    } else {
-      this.displayInfoComponent.setName(test.checkName);
-      this.displayInfoComponent.setRunResults(this.infoMap[test.checkName]);
-      this.displayInfoComponent.setDisplay(true);
+      if (this.displayInfoComponent.getName() === test.checkName) {
+        return;
+      }
     }
+    this.displayInfoComponent.setName(test.checkName);
+    this.displayInfoComponent.setRunResults(this.infoMap[test.checkName]);
+    this.displayInfoComponent.setDisplay(true);
   }
 }

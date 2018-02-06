@@ -1,16 +1,5 @@
-table, tr, td {
+#message-display {
+  height: 400px;
+  overflow-y: scroll;
   border: 1px solid black;
-  border-collapse: collapse;
-}
-
-table {
-  width: 100%;
-  table-layout: fixed;
-}
-
-td {
-  overflow: visible;
-  max-width: 50%;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
 }
