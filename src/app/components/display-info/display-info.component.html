@@ -1,0 +1,23 @@
+<div *ngIf="display">
+  <h1>{{name}}</h1>
+  <table>
+    <tr>
+      <td colspan="2">URL</td>
+      <td>Successes</td>
+      <td>Errors</td>
+    </tr>
+    <tr *ngFor="let result of runResults">
+      <td colspan="2"><a [href]="result.url" target="_blank">{{result.url}}</a></td>
+      <td>
+        <ul>
+          <li *ngFor="let message of result.successMessages">{{message}}</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li *ngFor="let message of result.errorMessages">{{message}}</li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</div>

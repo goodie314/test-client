@@ -1,6 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {TestService} from "./service/test.service";
-import {Test} from "./models/Test";
+import {Test} from "./models/test";
+import {StartCrawlerMessage} from "./models/start-crawler-message";
+import {WebcrawlerSocketService} from "./service/webcrawler-socket.service";
+import {TestResponseMessage} from "./models/test-response-message";
+import {DisplayInfoComponent} from "./components/display-info/display-info.component";
 
 @Component({
   selector: 'app-root',
@@ -8,9 +12,14 @@ import {Test} from "./models/Test";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  @ViewChild(DisplayInfoComponent)
+  private displayInfoComponent: DisplayInfoComponent;
   tests: Test[];
+  url: string;
+  private infoMap: {[checkName: string]: TestResponseMessage[]} = {};
 
-  constructor(private testService: TestService) {
+  constructor(private testService: TestService,
+              private webcrawlerSockerService: WebcrawlerSocketService) {
   }
 
   ngOnInit(): void {
@@ -27,9 +36,35 @@ export class AppComponent implements OnInit {
 
   public runTests(): void {
     console.log('run tests');
-    const activeTests = this.tests.filter(test => {
-      return test.active;
+    this.infoMap = {};
+    const startCrawlerMessage: StartCrawlerMessage = {
+      url: this.url,
+      tests: []
+    };
+    startCrawlerMessage.tests = this.tests
+      .filter(test => test.active)
+      .map(test => test.checkName);
+    console.log('start crawler: ', startCrawlerMessage);
+    this.webcrawlerSockerService.startCrawler(startCrawlerMessage)
+      .subscribe((response: TestResponseMessage) => {
+        console.log('response: ', response);
+        if (!this.infoMap[response.checkName]) {
+          this.infoMap[response.checkName] = [];
+        }
+        this.infoMap[response.checkName].push(response);
+        if (this.displayInfoComponent.getDisplay()) {
+          this.displayInfoComponent.setRunResults(this.infoMap[this.displayInfoComponent.getName()]);
+        }
     });
-    console.log('tests: ', activeTests);
+  }
+
+  public openInfo(test: Test): void {
+    if (this.displayInfoComponent.getDisplay()) {
+      this.displayInfoComponent.setDisplay(false);
+    } else {
+      this.displayInfoComponent.setName(test.checkName);
+      this.displayInfoComponent.setRunResults(this.infoMap[test.checkName]);
+      this.displayInfoComponent.setDisplay(true);
+    }
   }
 }

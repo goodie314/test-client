@@ -1,9 +1,10 @@
 <div>
-  <input type="text" /><button (click)="runTests()">Run</button>
+  <input type="text" [(ngModel)]="url" style="width:75%"/><button (click)="runTests()">Run</button>
 </div>
 <ul>
   <li *ngFor="let test of tests">
-    <input type="checkbox" class="activeTests" [(ngModel)]="test.active">{{test.checkName}}
+    <input type="checkbox" class="activeTests" [(ngModel)]="test.active"><label (click)="openInfo(test)">{{test.checkName}}</label>
   </li>
+  <display-info #info></display-info>
 </ul>
 

@@ -7,6 +7,8 @@ import {TestService} from "./service/test.service";
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
+import {WebcrawlerSocketService} from "./service/webcrawler-socket.service";
+import {DisplayInfoModule} from "./components/display-info/display-info.module";
 
 
 @NgModule({
@@ -17,9 +19,11 @@ import {HttpClientModule} from "@angular/common/http";
     BrowserModule,
     CommonModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    DisplayInfoModule
   ],
-  providers: [TestService],
+  providers: [TestService,
+              WebcrawlerSocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
